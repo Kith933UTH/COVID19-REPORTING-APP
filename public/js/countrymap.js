@@ -143,6 +143,7 @@ const step1 = async function (t) {
     }),
     m);
 };
+
 const step2 = async function (t) {
   !(function (t, N) {
     function j(t) {
@@ -10209,10 +10210,8 @@ const step3 = async function (e) {
     u.push(d);
 };
 
-// console.log(simplemaps_countrymap_mapdata);
-
-!(async function generateMap() {
+setTimeout(() => {
   step1(window);
   step2(window);
   step3("simplemaps_countrymap");
-})();
+}, 1000);

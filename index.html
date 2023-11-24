@@ -220,7 +220,6 @@
   <script>
     const socket = io();
     socket.on("send-data", (msg) => {
-      console.log(msg);
       if (!typeof msg === "object") {
         document.write("Cannot get DATA. Please check you connection!");
         return;
