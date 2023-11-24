@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/virus.png" />
+    <title>Tình hình Covid19 Việt Nam</title>
+    <link rel="stylesheet" href="/css/reset.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- header -->
+      <header>
+        <h1 class="main-title">Thông tin Covid19 Việt Nam</h1>
+        <p class="header-date current-day"></p>
+      </header>
+
+      <!-- body -->
+      <div class="main-content">
+        <!-- over view -->
+        <section class="content-item" id="overview-chart-wrapper">
+          <h2 class="content-item-header">Tổng quan tình hình cả nước</h2>
+          <div class="content-item-wrapper">
+            <!-- over view notify -->
+            <p class="overview-mess">
+              Ở Việt Nam, tính đến <span class="last-update"></span> ghi nhận
+              được <span class="infected-case infected"></span> ca nhiễm, trong
+              đó có <span class="died-case died"></span> ca tử vong và
+              <span class="recovered-case recovered"></span> đã hồi phục(chữa
+              khỏi).
+            </p>
+            <!-- over view detail -->
+            <div class="overview-items-wrapper">
+              <div class="overview-item infected-bg">
+                <div class="overview-item-header">Số ca nhiễm</div>
+                <div class="overview-item-case infected-case infected"></div>
+                <div class="overview-item-news infected-today">
+                  24 giờ qua <span></span>
+                </div>
+              </div>
+
+              <div class="overview-item recovered-bg">
+                <div class="overview-item-header">Khỏi</div>
+                <div class="overview-item-case recovered-case recovered"></div>
+                <div class="overview-item-news recovered-today">
+                  24 giờ qua <span></span>
+                </div>
+              </div>
+
+              <div class="overview-item died-bg">
+                <div class="overview-item-header">Tử vong</div>
+                <div class="overview-item-case died-case died"></div>
+                <div class="overview-item-news died-today">
+                  24 giờ qua <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- over view chart -->
+          <h2 class="chart-title">TÌNH HÌNH ĐÁNH CHÚ Ý</h2>
+          <div id="filter-overview-chart-wrapper">
+            <div class="filter-item">
+              <input
+                type="radio"
+                name="filter-overview"
+                id="filter-infected"
+                value="infected"
+                checked
+              />
+              <label for="filter-infected">Số ca nhiễm</label>
+            </div>
+
+            <div class="filter-item">
+              <input
+                type="radio"
+                name="filter-overview"
+                id="filter-recovered"
+                value="recovered"
+              />
+              <label for="filter-recovered">Số ca khỏi</label>
+            </div>
+
+            <div class="filter-item">
+              <input
+                type="radio"
+                name="filter-overview"
+                id="filter-died"
+                value="died"
+              />
+              <label for="filter-died">Số tử vong</label>
+            </div>
+          </div>
+          <canvas
+            id="overViewChart"
+            style="width: 80%; max-width: 80%"
+          ></canvas>
+          <!-- end over view chart -->
+        </section>
+
+        <!-- detail province -->
+        <section class="content-item">
+          <h2 class="content-item-header">Tình hình địa phương</h2>
+          <div class="content-item-wrapper row">
+            <!-- province list data -->
+            <div class="locations-data-wrapper">
+              <div class="location-item header">
+                <p>Tỉnh/TP</p>
+                <p>Tổng số ca</p>
+                <p>24 giờ qua</p>
+                <p>Tử vong</p>
+              </div>
+              <div
+                class="location-item-wrapper"
+                id="location-item-wrapper"
+              ></div>
+            </div>
+            <!-- province map data -->
+            <div class="location-map-wrapper">
+              <div id="location-map"></div>
+              <div class="location-classify">
+                <div class="location-classify-header">Tổng số ca</div>
+                <div style="margin-bottom: 10px">
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #ed1c24"
+                    ></div>
+                    <div class="classify-detail">> 1.000.000</div>
+                  </div>
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #007092"
+                    ></div>
+                    <div class="classify-detail">500.001 - 1.000.000</div>
+                  </div>
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #008ebc"
+                    ></div>
+                    <div class="classify-detail">200.001 - 500.000</div>
+                  </div>
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #00ace3"
+                    ></div>
+                    <div class="classify-detail">100.001 - 200.000</div>
+                  </div>
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #54cbf2"
+                    ></div>
+                    <div class="classify-detail">50.001 - 100.000</div>
+                  </div>
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #95dcf4"
+                    ></div>
+                    <div class="classify-detail">0 - 50.000</div>
+                  </div>
+                </div>
+                <div class="location-classify-header">Ghi chú</div>
+                <div>
+                  <div class="location-classify-item">
+                    <div
+                      class="classify-color"
+                      style="background-color: #ff7f50"
+                    ></div>
+                    <div class="classify-detail">Có ca nhiễm trong 24h qua</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- footer -->
+      <footer>
+        <div class="footer-item">
+          <p>
+            API :
+            <a href="https://apify.com/dtrungtin/covid-vi" target="_blank"
+              >https://apify.com/dtrungtin/covid-vi</a
+            >
+          </p>
+          <p>
+            API confirmed by :
+            <a href="https://ncov.moh.gov.vn/" target="_blank"
+              >https://ncov.moh.gov.vn/</a
+            >
+          </p>
+          <p>
+            Last updated data :
+            <span class="last-update"></span>
+          </p>
+        </div>
+        <p class="footer-item">Powered By Kith@UTH933</p>
+      </footer>
+    </div>
+
+    <!-- moment.js get time -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
+      integrity="sha512-Dz4zO7p6MrF+VcOD6PUbA08hK1rv0hDv/wGuxSUjImaUYxRyK2gLC6eQWVqyDN9IM1X/kUA8zkykJS/gEVOd3w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- map data of VietNam -->
+    <script src="/js/mapdata.js"></script>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.on("send-data", (msg) => {
+      console.log(msg);
+      if (!typeof msg === "object") {
+        document.write("Cannot get DATA. Please check you connection!");
+        return;
+      }
+      //data object
+      const data = {
+        getDied() {
+          return msg.died;
+        },
+        getDiedToday() {
+          return msg.diedToday;
+        },
+        getInfected() {
+          return msg.infected;
+        },
+        getInfectedToday() {
+          return msg.infectedToday;
+        },
+        getRecovered() {
+          return msg.recovered;
+        },
+        getRecoveredToday() {
+          return msg.recoveredToday;
+        },
+        getLastUpdateApi() {
+          return msg.lastUpdatedAtApify;
+        },
+        getOverViews() {
+          return msg.overview;
+        },
+        getLocations() {
+          return msg.locations;
+        },
+      };
+
+      //bind
+      const $ = document.getElementById.bind(document);
+      const $$ = document.querySelectorAll.bind(document);
+
+      //set date
+      const setCurrentDate = () => {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, "0");
+        const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+        const yyyy = today.getFullYear();
+        const dateOfWeek =
+          today.getDay() == 0 ? "Chủ nhật" : today.getDay() + 1;
+
+        const date = "Thứ " + dateOfWeek + ", " + dd + "/" + mm + "/" + yyyy;
+        $$(".current-day").forEach((item) => {
+          item.innerHTML = date;
+        });
+      };
+
+      //format number to xx1.124.567.890
+      const formatNumber = (x) => {
+        x = x.toString();
+        var pattern = /(-?\d+)(\d{3})/;
+        while (pattern.test(x)) x = x.replace(pattern, "$1.$2");
+        return x;
+      };
+      const setCase = (list, value) => {
+        list.forEach((element) => {
+          element.innerHTML = formatNumber(value);
+        });
+      };
+
+      //over view chart
+      const generateOverviewChart = (data, filter) => {
+        document.getElementById("overViewChart").remove();
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("id", "overViewChart");
+        canvas.setAttribute("style", "width: 80%; max-width: 80%");
+        document.getElementById("overview-chart-wrapper").appendChild(canvas);
+
+        const yValues1 = [];
+        const xValues1 = [];
+
+        const yValues2 = [];
+        const xValues2 = [];
+
+        let labelLine = "Trung bình 7 ngày";
+        let labelBar = "";
+        let barColors = "";
+
+        if (filter == "recovered") {
+          barColors = "#28a745";
+          labelBar = "SỐ CA KHỎI";
+          data.forEach((element) => {
+            xValues1.push(element.date);
+            yValues1.push(element.recovered);
+
+            xValues2.push(element.recovered);
+            yValues2.push(element.avgRecovered7day);
+          });
+        } else if (filter == "died") {
+          labelBar = "SỐ CA TỬ VONG";
+          barColors = "#ed1c24";
+          data.forEach((element) => {
+            xValues1.push(element.date);
+            yValues1.push(element.death);
+
+            xValues2.push(element.death);
+            yValues2.push(element.avgDeath7day);
+          });
+        } else {
+          labelBar = "SỐ CA NHIỄM";
+          barColors = "#2e3192";
+          data.forEach((element) => {
+            xValues1.push(element.date);
+            yValues1.push(element.cases);
+
+            xValues2.push(element.cases);
+            yValues2.push(element.avgCases7day);
+          });
+        }
+
+        const mixedChart = new Chart("overViewChart", {
+          type: "bar",
+          data: {
+            datasets: [
+              {
+                label: labelLine,
+                data: yValues2,
+                backgroundColor: "transparent",
+                borderColor: "#FFCC00",
+                type: "line",
+                pointBackgroundColor: "#FFCC00",
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 5,
+                hoverBorderColor: "blue",
+                order: 1,
+              },
+              {
+                label: labelBar,
+                data: yValues1,
+                backgroundColor: barColors,
+                order: 2,
+              },
+            ],
+            labels: xValues1,
+          },
+          options: {
+            legend: { display: true, position: "bottom", reverse: true },
+            title: {
+              display: false,
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    // beginAtZero: true,
+                    callback: function (value) {
+                      if (value % 1 === 0) {
+                        return value;
+                      }
+                    },
+                  },
+                },
+              ],
+            },
+            interaction: {
+              intersect: false,
+              mode: "index",
+            },
+            // hover: {
+            //   intersect: false,
+            //   animationDuration: 1,
+            // },
+            tooltips: {
+              enabled: true,
+              mode: "index",
+              intersect: false,
+              position: "nearest",
+            },
+          },
+        });
+      };
+
+      //location data list generate
+      const setLocationsData = (data) => {
+        const locationsHTML = data.reduce((total, item) => {
+          total += `<div class="location-item">
+                  <p class="">${item.name}</p>
+                  <p class="infected">${formatNumber(item.cases)}</p>
+                  <p class="bold died">${
+                    item.casesToday > 0
+                      ? "+" + formatNumber(item.casesToday)
+                      : "_"
+                  }</p>
+                  <p class="died">${formatNumber(item.death)}</p>
+                </div>`;
+          return total;
+        }, "");
+
+        $("location-item-wrapper").innerHTML = locationsHTML;
+      };
+
+      //add data to web
+      setCurrentDate();
+      setCase($$(".died-case"), data.getDied());
+      setCase($$(".recovered-case"), data.getRecovered());
+      setCase($$(".infected-case"), data.getInfected());
+      setCase($$(".infected-today span"), "+" + data.getInfectedToday());
+      setCase($$(".recovered-today span"), "+" + data.getRecoveredToday());
+      setCase($$(".died-today span"), "+" + data.getDiedToday());
+      $$(".last-update").forEach((item) => {
+        item.innerHTML = moment(data.getLastUpdateApi())
+          .utc()
+          .format("hh:mm:ss(A) DD/MM/YYYY");
+      });
+
+      //overview chart
+      let filter = "";
+      const inputFilters = $$(
+        "#filter-overview-chart-wrapper .filter-item input[type='radio']"
+      );
+      inputFilters.forEach((item) => {
+        item.addEventListener("change", (e) => {
+          if (item.checked == true) {
+            filter = item.value;
+          }
+          generateOverviewChart(data.getOverViews(), filter);
+        });
+      });
+
+      //add data to web app
+      generateOverviewChart(data.getOverViews(), filter);
+      setLocationsData(data.getLocations());
+
+      //format map data
+      for (item in simplemaps_countrymap_mapdata.state_specific) {
+        data.getLocations().forEach((location) => {
+          if (
+            simplemaps_countrymap_mapdata.state_specific[item].name ==
+            location.name
+          ) {
+            simplemaps_countrymap_mapdata.state_specific[
+              item
+            ].description = `<p>Tổng số ca: <span style='color:#2e3192;font-weight: 600;'>${formatNumber(
+              location.cases
+            )}</span></p> <p>24h qua: <span style='color:#ed1c24; font-weight: 600;'>${
+              location.casesToday > 0
+                ? "+" + formatNumber(location.casesToday)
+                : "-"
+            }</span></p> <p>Tử vong: <span style='color:#ed1c24; font-weight: 600;'>${formatNumber(
+              location.death
+            )}</span></p>`;
+
+            if (location.cases <= 50000) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#95dcf4";
+            } else if (location.cases > 50000 && location.cases <= 100000) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#54cbf2";
+            } else if (location.cases > 100000 && location.cases <= 200000) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#00ace3";
+            } else if (location.cases > 200000 && location.cases <= 500000) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#008ebc";
+            } else if (location.cases > 500000 && location.cases <= 1000000) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#007092";
+            } else if (location.cases > 1000000) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#ed1c24";
+            }
+
+            if (location.casesToday > 0) {
+              simplemaps_countrymap_mapdata.state_specific[item].color =
+                "#FF7F50";
+              simplemaps_countrymap_mapdata.state_specific[item].hover_color =
+                "#ed1c24";
+            }
+          }
+        });
+      }
+    });
+  </script>
+  <!-- generate map  -->
+  <script src="/js/countrymap.js"></script>
+</html>
